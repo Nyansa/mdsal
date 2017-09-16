@@ -196,6 +196,9 @@ final class LeafNodeCodecContext<D extends DataObject> extends NodeCodecContext<
     @Override
     protected Object deserializeObject(final NormalizedNode<?, ?> normalizedNode) {
         if (normalizedNode instanceof LeafNode<?>) {
+            if (normalizedNode.getValue() == null) {
+                return null;
+            }
             return valueCodec.deserialize(normalizedNode.getValue());
         }
         if (normalizedNode instanceof LeafSetNode<?>) {
@@ -203,6 +206,9 @@ final class LeafNodeCodecContext<D extends DataObject> extends NodeCodecContext<
             final Collection<LeafSetEntryNode<Object>> domValues = ((LeafSetNode<Object>) normalizedNode).getValue();
             final List<Object> result = new ArrayList<>(domValues.size());
             for (final LeafSetEntryNode<Object> valueNode : domValues) {
+                if (valueNode.getValue() == null) {
+                    return null;
+                }
                 result.add(valueCodec.deserialize(valueNode.getValue()));
             }
             return result;

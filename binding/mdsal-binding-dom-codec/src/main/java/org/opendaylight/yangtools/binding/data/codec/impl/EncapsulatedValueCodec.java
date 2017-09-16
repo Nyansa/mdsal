@@ -65,9 +65,6 @@ final class EncapsulatedValueCodec extends ReflectionBasedCodec implements Schem
 
     @Override
     public Object deserialize(final Object input) {
-        if (input == null) {
-            return null;
-        }
         try {
             return constructor.invokeExact(input);
         } catch (Throwable e) {
